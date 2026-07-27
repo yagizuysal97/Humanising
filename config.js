@@ -4,4 +4,4 @@
 // results.html) bu dosyayı otomatik olarak kullanır, ayrı ayrı
 // değiştirmenize gerek yoktur.
 // ====================================================================
-const SCRIPT_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxOU5RzQwv83JAbAMrrAg7HX7QiQMUI9kdSKLRcjC_DErExoaiyH3_uJxMgjBcM39SY/exec";
