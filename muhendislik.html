@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Enerji &amp; AI Mühendisi · Jüri Değerlendirme</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="power-line" id="powerLine"></div>
+
+<div class="wrap">
+  <div class="eyebrow"><span class="dot"></span> ENERJİ &amp; AI MÜHENDİSİ · HUMANISING ENERGY</div>
+  <h1>Mühendislik Puanlama</h1>
+  <p class="sub">Enerji sistemi tasarımının mantığı, teknik tutarlılık ve AI Community Agent kurgusu değerlendirilir. <a class="back" href="index.html">← Rol seçimine dön</a></p>
+
+  <div class="card">
+    <div class="row-2">
+      <div>
+        <label for="judge">Jüri Adı</label>
+        <input type="text" id="judge" placeholder="Adınız" autocomplete="off">
+      </div>
+      <div>
+        <label for="team">Takım</label>
+        <input type="text" id="team" placeholder="Takım-1" autocomplete="off">
+      </div>
+    </div>
+  </div>
+
+  <div id="criteria-container"></div>
+
+  <div class="card">
+    <label for="note">Notlar</label>
+    <textarea id="note" placeholder="Öne çıkan güçlü/zayıf nokta..."></textarea>
+  </div>
+
+  <div class="total-card">
+    <div class="total-top">
+      <span class="total-label">Toplam Puan</span>
+      <span class="total-number" id="totalNum">0<span>/35</span></span>
+    </div>
+    <div class="gauge"><div class="gauge-fill" id="gaugeFill"></div></div>
+    <button class="submit" id="submitBtn">
+      <span class="bolt">⚡</span> <span id="submitText">Puanı Gönder</span>
+    </button>
+  </div>
+
+  <p class="footer-note">Bu sayfada yalnızca Enerji &amp; AI Mühendisi kriterlerini puanlayın.<br>Aynı takım için tekrar oy verebilirsiniz — her gönderim ayrı kayıt olarak eklenir.</p>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+<script>
+  initJuriForm({
+    role: 'muhendislik',
+    maxTotal: 35,
+    criteria: [
+      {
+        id: 'sistem_tasarimi', name: 'Enerji Sistemi Tasarımı', max: 10,
+        question: 'Çözüm, kesintiler, talep artışı, kaynak dağılımı ve yerel ihtiyaçlara uygun bir sistem mimarisi sunuyor mu?',
+        low: 'Sistem tasarımı belirsiz veya tutarsız.',
+        mid: 'Temel mantık var ancak bileşenler/akış tam açıklanmamış.',
+        high: 'Sistem mimarisi net, tutarlı ve problem başlıklarına doğrudan cevap veriyor.'
+      },
+      {
+        id: 'teknik_makulluk', name: 'Teknik Makullük ve Uygulanabilirlik', max: 7,
+        question: 'Çözüm ileri mühendislik detayı gerektirmeden makul çalışma prensibiyle açıklanmış mı?',
+        low: 'Teknik mantık zayıf veya gerçekçilik düşük.',
+        mid: 'Genel olarak makul; bazı varsayımlar/boşluklar var.',
+        high: 'Uygulanabilir, anlaşılır, gerçekçi varsayımlara dayanan bir teknik kurgu var.'
+      },
+      {
+        id: 'agent_tanimi', name: 'AI Agent Tanımı ve Veri Kurgusu', max: 7,
+        question: 'Agent\'ın amacı, beslendiği veriler, kullanıcıları ve sınırları net tanımlanmış mı?',
+        low: 'Agent tanımı belirsiz; veri kaynağı yok.',
+        mid: 'Agent amacı anlaşılır fakat veri/kapsam kısmi.',
+        high: 'Agent net tanımlı; veri kaynakları, kullanıcılar ve çıktılar açık.'
+      },
+      {
+        id: 'agent_senaryo', name: 'Agent Kullanım Senaryosu ve Örnek S-C', max: 6,
+        question: 'Agent\'ın paydaş sorularını yanıtlama, projeyi anlatma ve bilgilendirme kullanım senaryosu gösterilmiş mi?',
+        low: 'Kullanım örneği yok veya çok yüzeysel.',
+        mid: 'Örnek soru-cevap var ancak sınırlı.',
+        high: 'Gerçekçi, paydaş odaklı ve ikna edici örnek soru-cevaplar var.'
+      },
+      {
+        id: 'kriz_yonetimi', name: 'Kriz Yönetimi Aksiyon Planı', max: 5,
+        question: 'Agent kriz anında yönetime uygulanabilir, önceliklendirilmiş aksiyon önerileri sunabiliyor mu?',
+        low: 'Kriz kullanımı yok.',
+        mid: 'Kriz önerisi var ancak aksiyonlar genel.',
+        high: 'Kriz senaryosunda net, öncelikli ve uygulanabilir aksiyon planı sunulmuş.'
+      }
+    ]
+  });
+</script>
+
+</body>
+</html>

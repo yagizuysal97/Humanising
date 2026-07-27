@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sonuçlar · Humanising Energy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="power-line"></div>
+<div class="wrap">
+  <div class="eyebrow"><span class="dot"></span> HUMANISING ENERGY · KAHRAMANMARAŞ</div>
+  <h1>Canlı Sonuç Tablosu</h1>
+  <p class="sub">Final skor = İK (/30) + Sürdürülebilirlik (/35) + Mühendislik (/35) ortalamalarının toplamı. <a class="back" href="index.html">← Rol seçimine dön</a></p>
+
+  <div class="refresh-row">
+    <button class="refresh-btn" onclick="load()">↻ Yenile</button>
+    <span class="status" id="status">yükleniyor…</span>
+  </div>
+
+  <div id="list"></div>
+</div>
+
+<script src="config.js"></script>
+<script>
+  const ROLE_META = {
+    ik: {label:'İK', max:30},
+    surdurulebilirlik: {label:'Sürdürülebilirlik', max:35},
+    muhendislik: {label:'Mühendislik', max:35}
+  };
+
+  function fmt(n){ return n===null ? '—' : Math.round(n*10)/10; }
+
+  function avg(arr){
+    if(!arr.length) return null;
+    return arr.reduce((s,x)=>s+x.total,0)/arr.length;
+  }
+
+  async function load(){
+    const status = document.getElementById('status');
+    const list = document.getElementById('list');
+    status.textContent = 'yükleniyor…';
+
+    if(typeof SCRIPT_URL === 'undefined' || SCRIPT_URL.includes('PASTE_YOUR')){
+      list.innerHTML = '<div class="empty">SCRIPT_URL henüz ayarlanmadı.<br>config.js dosyasındaki kurulum adımlarını izleyin.</div>';
+      status.textContent = '';
+      return;
+    }
+
+    try{
+      const res = await fetch(SCRIPT_URL);
+      const data = await res.json(); // { ik:[...], surdurulebilirlik:[...], muhendislik:[...] }
+
+      const teams = {};
+      function ensure(team){
+        if(!teams[team]) teams[team] = { ik:[], surdurulebilirlik:[], muhendislik:[] };
+        return teams[team];
+      }
+      Object.keys(ROLE_META).forEach(role=>{
+        (data[role]||[]).forEach(r=> ensure(r.team)[role].push(r));
+      });
+
+      const teamNames = Object.keys(teams);
+      if(!teamNames.length){
+        list.innerHTML = '<div class="empty">Henüz gönderilmiş puan yok.</div>';
+        status.textContent = 'kayıt yok';
+        return;
+      }
+
+      const rows = teamNames.map(team=>{
+        const t = teams[team];
+        const roleAvgs = {};
+        Object.keys(ROLE_META).forEach(role=>{ roleAvgs[role] = avg(t[role]); });
+        const final = Object.values(roleAvgs).reduce((s,v)=> s + (v||0), 0);
+        return { team, t, roleAvgs, final };
+      }).sort((a,b)=> b.final - a.final);
+
+      list.innerHTML = rows.map((r,i)=>`
+        <div class="team-card">
+          <div class="team-top">
+            <span class="team-name">#${i+1} · ${escapeHtml(r.team)}</span>
+            <span class="team-avg">${fmt(r.final)}<span>/100</span></span>
+          </div>
+          <div class="gauge"><div class="gauge-fill" style="width:${r.final}%"></div></div>
+          <div class="subrole">
+            ${Object.entries(ROLE_META).map(([role, meta])=>{
+              const a = r.roleAvgs[role];
+              const n = r.t[role].length;
+              return `
+                <div class="subrole-item ${a===null?'missing':''}">
+                  <div class="sr-label">${meta.label} /${meta.max}</div>
+                  <div class="sr-val">${fmt(a)}</div>
+                  <div class="sr-count">${n} oy</div>
+                </div>`;
+            }).join('')}
+          </div>
+          <div class="votes-toggle" onclick="this.nextElementSibling.classList.toggle('show')">jüri notlarını göster ▾</div>
+          <div class="votes-list">
+            ${Object.entries(ROLE_META).map(([role, meta])=>{
+              const votes = r.t[role];
+              if(!votes.length) return `<div class="vote-group-label">${meta.label}</div><div class="vote-row" style="color:#5A6472;">henüz oy yok</div>`;
+              return `<div class="vote-group-label">${meta.label}</div>` + votes.map(v=>`
+                <div class="vote-row"><b>${escapeHtml(v.judge||'—')}</b><span>${v.total}/${meta.max}</span></div>
+                ${v.note ? `<div class="vote-note">"${escapeHtml(v.note)}"</div>` : ''}
+              `).join('');
+            }).join('')}
+          </div>
+        </div>
+      `).join('');
+
+      const totalVotes = teamNames.reduce((s,t)=> s + teams[t].ik.length + teams[t].surdurulebilirlik.length + teams[t].muhendislik.length, 0);
+      status.textContent = totalVotes + ' oy · ' + teamNames.length + ' takım';
+    }catch(err){
+      list.innerHTML = '<div class="empty">Sonuçlar yüklenemedi. Bağlantınızı kontrol edin.</div>';
+      status.textContent = 'hata';
+    }
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  load();
+</script>
+</body>
+</html>

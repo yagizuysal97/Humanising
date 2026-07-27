@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sürdürülebilirlik Uzmanı · Jüri Değerlendirme</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="power-line" id="powerLine"></div>
+
+<div class="wrap">
+  <div class="eyebrow"><span class="dot"></span> SÜRDÜRÜLEBİLİRLİK UZMANI · HUMANISING ENERGY</div>
+  <h1>Sürdürülebilirlik Puanlama</h1>
+  <p class="sub">Humanising Energy boyutları, çevresel/toplumsal denge ve uzun vadeli sürdürülebilir değer değerlendirilir. <a class="back" href="index.html">← Rol seçimine dön</a></p>
+
+  <div class="card">
+    <div class="row-2">
+      <div>
+        <label for="judge">Jüri Adı</label>
+        <input type="text" id="judge" placeholder="Adınız" autocomplete="off">
+      </div>
+      <div>
+        <label for="team">Takım</label>
+        <input type="text" id="team" placeholder="Takım-1" autocomplete="off">
+      </div>
+    </div>
+  </div>
+
+  <div id="criteria-container"></div>
+
+  <div class="card">
+    <label for="note">Notlar</label>
+    <textarea id="note" placeholder="Öne çıkan güçlü/zayıf nokta..."></textarea>
+  </div>
+
+  <div class="total-card">
+    <div class="total-top">
+      <span class="total-label">Toplam Puan</span>
+      <span class="total-number" id="totalNum">0<span>/35</span></span>
+    </div>
+    <div class="gauge"><div class="gauge-fill" id="gaugeFill"></div></div>
+    <button class="submit" id="submitBtn">
+      <span class="bolt">⚡</span> <span id="submitText">Puanı Gönder</span>
+    </button>
+  </div>
+
+  <p class="footer-note">Bu sayfada yalnızca Sürdürülebilirlik Uzmanı kriterlerini puanlayın.<br>Aynı takım için tekrar oy verebilirsiniz — her gönderim ayrı kayıt olarak eklenir.</p>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+<script>
+  initJuriForm({
+    role: 'surdurulebilirlik',
+    maxTotal: 35,
+    criteria: [
+      {
+        id: 'erisim', name: 'Enerjiye Erişim', max: 7,
+        question: 'Kırsal bölgeler, kırılgan gruplar ve deprem sonrası erişim ihtiyacı somut şekilde ele alınmış mı?',
+        low: 'Erişim konusu belirsiz veya yok.',
+        mid: 'Erişim için genel öneri var ancak hedef kitle/uygulama net değil.',
+        high: 'Erişim sorunu hedef gruplar ve uygulanabilir mekanizmalarla net çözülmüş.'
+      },
+      {
+        id: 'karsilanabilirlik', name: 'Karşılanabilirlik', max: 7,
+        question: 'Enerji faturalarındaki artışı azaltmaya veya ekonomik yükü dengelemeye yönelik mekanizma var mı?',
+        low: 'Maliyet etkisi değerlendirilmemiş.',
+        mid: 'Maliyet faydası söylenmiş ancak mekanizma sınırlı.',
+        high: 'Fatura/maliyet baskısını azaltan açık, adil ve sürdürülebilir bir model var.'
+      },
+      {
+        id: 'esitlik_adalet', name: 'Eşitlik ve Adalet', max: 7,
+        question: 'Fayda ve yük paylaşımı toplum içinde dengeli mi; kimseyi geride bırakmama yaklaşımı var mı?',
+        low: 'Adalet boyutu yok veya çok genel.',
+        mid: 'Bazı gruplar düşünülmüş ancak denge sınırlı.',
+        high: 'Farklı gruplar için kapsayıcı, adil ve şeffaf fayda paylaşımı tasarlanmış.'
+      },
+      {
+        id: 'yasam_kalitesi', name: 'Yaşam Kalitesi Etkisi', max: 7,
+        question: 'Çözüm güvenlik, refah, yerel ekonomi, istihdam, günlük hayat veya çevre kalitesi üzerinde somut fayda yaratıyor mu?',
+        low: 'Yaşam kalitesi bağlantısı zayıf.',
+        mid: 'Faydalar belirtilmiş ancak somutluk sınırlı.',
+        high: 'İnsanların günlük hayatına dokunan somut ve ölçülebilir etkiler açıklanmış.'
+      },
+      {
+        id: 'uzun_vadeli', name: 'Uzun Vadeli Sürdürülebilirlik ve Ölçülebilirlik', max: 7,
+        question: 'Çözüm uzun vadede devam edebilir mi; başarı göstergeleri/KPI önerilmiş mi?',
+        low: 'Süreklilik veya ölçüm yok.',
+        mid: 'Bazı sürdürülebilirlik unsurları var ancak KPI sınırlı.',
+        high: 'Uzun vadeli etki, çevresel/toplumsal denge ve ölçüm göstergeleri açık.'
+      }
+    ]
+  });
+</script>
+
+</body>
+</html>

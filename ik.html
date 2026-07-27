@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>İK Uzmanı · Jüri Değerlendirme</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="power-line" id="powerLine"></div>
+
+<div class="wrap">
+  <div class="eyebrow"><span class="dot"></span> İK UZMANI · HUMANISING ENERGY</div>
+  <h1>İK Uzmanı Puanlama</h1>
+  <p class="sub">İnsan odaklılık, paydaş ihtiyacı, iletişim, ikna ve sunum kalitesi değerlendirilir. <a class="back" href="index.html">← Rol seçimine dön</a></p>
+
+  <div class="card">
+    <div class="row-2">
+      <div>
+        <label for="judge">Jüri Adı</label>
+        <input type="text" id="judge" placeholder="Adınız" autocomplete="off">
+      </div>
+      <div>
+        <label for="team">Takım</label>
+        <input type="text" id="team" placeholder="Takım-1" autocomplete="off">
+      </div>
+    </div>
+  </div>
+
+  <div id="criteria-container"></div>
+
+  <div class="card">
+    <label for="note">Notlar</label>
+    <textarea id="note" placeholder="Öne çıkan güçlü/zayıf nokta..."></textarea>
+  </div>
+
+  <div class="total-card">
+    <div class="total-top">
+      <span class="total-label">Toplam Puan</span>
+      <span class="total-number" id="totalNum">0<span>/30</span></span>
+    </div>
+    <div class="gauge"><div class="gauge-fill" id="gaugeFill"></div></div>
+    <button class="submit" id="submitBtn">
+      <span class="bolt">⚡</span> <span id="submitText">Puanı Gönder</span>
+    </button>
+  </div>
+
+  <p class="footer-note">Bu sayfada yalnızca İK Uzmanı kriterlerini puanlayın.<br>Aynı takım için tekrar oy verebilirsiniz — her gönderim ayrı kayıt olarak eklenir.</p>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+<script>
+  initJuriForm({
+    role: 'ik',
+    maxTotal: 30,
+    criteria: [
+      {
+        id: 'problem_ihtiyac', name: 'Problem ve İhtiyaç İçgörüsü', max: 8,
+        question: 'Bölgedeki kesinti, maliyet artışı, erişim sorunu, protestolar ve farklı paydaş ihtiyaçları doğru okunmuş mu?',
+        low: 'Problemler yüzeysel; ihtiyaçlar belirsiz.',
+        mid: 'Temel problemler tanımlı ancak paydaş bazlı içgörü sınırlı.',
+        high: 'Sorunlar ve paydaş ihtiyaçları net, ilişkili ve ikna edici şekilde analiz edilmiş.'
+      },
+      {
+        id: 'paydas_iletisim', name: 'Paydaş İletişimi ve Toplumsal Kabul', max: 10,
+        question: 'Yerel halk, esnaf, çiftçi, belediye, sanayi ve genç girişimciler için güven ve kabul yaratacak yaklaşım var mı?',
+        low: 'Paydaşlar yalnızca listelenmiş.',
+        mid: 'Bazı paydaşlar için öneriler var; iletişim planı kısmi.',
+        high: 'Her kritik paydaş için net değer önerisi, itiraz yönetimi ve kabul stratejisi var.'
+      },
+      {
+        id: 'insan_odakli', name: 'İnsan Odaklı Hikâyeleştirme', max: 6,
+        question: 'Çözüm teknik bir proje gibi değil, insan hayatını iyileştiren bir yaşam sistemi olarak anlatılmış mı?',
+        low: 'Anlatım teknik veya dağınık kalmış.',
+        mid: 'İnsan etkisi yer yer görünür ancak hikâye bütünlüğü zayıf.',
+        high: 'Enerji çözümü yaşam kalitesi, güven, ekonomik rahatlama ve sosyal fayda ile güçlü bağlanmış.'
+      },
+      {
+        id: 'sunum_ikna', name: 'Sunum, Ekip Akışı ve İkna Gücü', max: 6,
+        question: 'Sunum net, profesyonel, süreye uygun ve sorulara cevap verebilir nitelikte mi?',
+        low: 'Akış zayıf, anlatım belirsiz.',
+        mid: 'Genel olarak anlaşılır; bazı geçişler/cevaplar geliştirilebilir.',
+        high: 'Akıcı, net, profesyonel ve jüriyi ikna eden bir anlatım var.'
+      }
+    ]
+  });
+</script>
+
+</body>
+</html>
